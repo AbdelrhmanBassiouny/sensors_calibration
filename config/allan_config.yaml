@@ -1,0 +1,4 @@
+imu_topic: "/br5/mavros/imu/data"
+imu_rate: 30
+measure_rate: 30
+sequence_time: 21600
