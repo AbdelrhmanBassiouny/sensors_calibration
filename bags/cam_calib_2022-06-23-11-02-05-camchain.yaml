@@ -1,0 +1,8 @@
+cam0:
+  camera_model: pinhole
+  distortion_coeffs: [2.00980158520507, -3.0689615295451946, 1.8216517335292217, -0.3765392060037201]
+  distortion_model: equidistant
+  intrinsics: [4.273429047219663, 2.392194936284978, 351.27549395803203, 253.97209494677455]
+  line_delay: 7.382894642565676e-05
+  resolution: [640, 480]
+  rostopic: /br5/usb_cam/image_raw

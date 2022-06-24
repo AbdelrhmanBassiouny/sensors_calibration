@@ -1,0 +1,17 @@
+
+
+#example for aprilgrid
+# target_type: 'aprilgrid' #gridtype
+# tagCols: 6                  #number of apriltags
+# tagRows: 4                  #number of apriltags
+# tagSize: 0.075              #size of apriltag, edge to edge [m]
+# tagSpacing: 0.28             #ratio of space between tags to tagSize
+#                             #example: tagSize=2m, spacing=0.5m --> tagSpacing=0.25[-]
+
+#example for checkerboard
+target_type: 'checkerboard' #gridtype
+targetCols: 11              #number of internal chessboard corners
+targetRows: 6              #number of internal chessboard corners
+rowSpacingMeters: 0.05      #size of one chessboard square [m]
+colSpacingMeters: 0.05      #size of one chessboard square [m]
+
