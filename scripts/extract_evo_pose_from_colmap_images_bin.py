@@ -15,6 +15,10 @@ from scipy.spatial.transform import Rotation as Rot
 import matplotlib.pyplot as plt
 
 import rosbag
+import bagpy
+from bagpy import bagreader
+from std_msgs.msg import Header
+
 
 BaseImage = collections.namedtuple(
     "Image", ["id", "qvec", "tvec", "camera_id", "name", "xys", "point3D_ids"])
@@ -145,10 +149,22 @@ def get_times(bag_in, topic_name):
     for topic, msg, t in rosbag.Bag(bag_in).read_messages():
         # This also replaces tf timestamps under the assumption
         # that all transforms in the message share the same timestamp
-        if topic == topic_name:
-            lines.append(str(msg.header.stamp.to_sec())
-                         if msg._has_header else t)
+        if topic == topic_name:            
+            # lines.append(str(msg.header.stamp.to_sec())
+            #              if msg._has_header else t)
+            lines.append(str(msg.header.stamp.secs) +
+                         "." + str(msg.header.stamp.nsecs))
     return lines
+
+def get_times_new(bag_in, topic_name):
+    b = bagreader(bag_in)
+    data = None
+    for t in b.topics:
+        print(t)
+        if t == topic_name:
+            data = b.message_by_topic(topic_name)
+            print(data)
+    return data
 
 
 if __name__ == "__main__":
@@ -172,10 +188,16 @@ if __name__ == "__main__":
 
     evo_tum_file = open("evo_enu_" + sys.argv[2], 'w')
     
-    wc = bool(sys.argv[3])
+    wc = int(sys.argv[3])
+    if wc:
+        print("using Twc (cam -> world)")
+    else:
+        print("using Tcw (world -> cam)")
     
     if (bag is not None) and (topic is not None):
         times = get_times(bag, topic)
+        print(times)
+        # times = get_times_new(bag, topic)
     
     out_lines = []
     i = 0
@@ -197,6 +219,11 @@ if __name__ == "__main__":
 
             Rwc = Rcw.T
             twc = -Rwc.dot(tcw)
+            
+            R_align = Rot.from_euler('x', 90, degrees=True)
+            R_align = R_align.as_matrix()
+            Rwc = R_align.dot(Rwc)
+            twc = -R_align.dot(twc)
 
             qwc = Rot.from_dcm(Rwc).as_quat()
 
@@ -208,6 +235,9 @@ if __name__ == "__main__":
             qy = qwc[1]
             qz = qwc[2]
             qw = qwc[3]
+        
+        # print(R_align.as_matrix())
+        # break
         
         if times is not None:
             timestamp = times[i]

@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="rosbag" type="play" name="rosbag" required="true" args="$(find sensors_calibration)/bags/trial16_55hz_sync.bag"/>
+  <node name="extract" pkg="image_view" type="extract_images" respawn="false" required="true" output="screen" cwd="ROS_HOME">
+    <remap from="image" to="/br5/usb_cam/image_raw"/>
+  </node>
+</launch>
