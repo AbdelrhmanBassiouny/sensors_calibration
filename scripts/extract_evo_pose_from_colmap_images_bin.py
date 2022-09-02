@@ -221,7 +221,7 @@ if __name__ == "__main__":
             twc = -Rwc.dot(tcw)
             
             R_align = Rot.from_euler('x', 90, degrees=True)
-            R_align = R_align.as_matrix()
+            R_align = R_align.as_dcm()
             Rwc = R_align.dot(Rwc)
             twc = -R_align.dot(twc)
 
@@ -236,7 +236,7 @@ if __name__ == "__main__":
             qz = qwc[2]
             qw = qwc[3]
         
-        # print(R_align.as_matrix())
+        # print(R_align.as_dcm())
         # break
         
         if times is not None:
