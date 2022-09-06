@@ -255,18 +255,26 @@ if __name__ == "__main__":
 
         # Store pose lines before writting because they are unordered in
         # colmap files
+        # out_line = str(img_name * sampling_sec) + " " \
+        #         + str(tx) + " " + str(ty) + " " + str(tz) + " " \
+        #         + str(qx) + " " + str(qy) + " " + str(qz) + " " + str(qw) + "\n"
         out_line = str(timestamp) + " " \
-                    + str(tx) + " " + str(ty) + " " + str(tz) + " " \
-                    + str(qx) + " " + str(qy) + " " + str(qz) + " " + str(qw) + "\n"
+                + str(tx) + " " + str(ty) + " " + str(tz) + " " \
+                + str(qx) + " " + str(qy) + " " + str(qz) + " " + str(qw) + "\n"
 
         out_lines.append((timestamp, out_line))
         i += 1
 
-    # Sort poses from timestamp
+    # Sort poses from img_name
     out_lines.sort(key=lambda tup : tup[0])
-
+    i = 0
     for line in out_lines:
-        evo_tum_file.write(line[1])
+        line_list = line[1].split(" ")
+        line_list[0] = times[i]
+        i += 1
+        # line_list.insert(0, str(line[0]))
+        new_line = " ".join(line_list)
+        evo_tum_file.write(new_line)
         evo_tum_file.flush()
 
     evo_tum_file.close()

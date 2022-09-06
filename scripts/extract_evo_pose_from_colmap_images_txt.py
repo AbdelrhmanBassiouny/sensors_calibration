@@ -119,13 +119,9 @@ if __name__ == "__main__":
 
 
         if cam_pose_line is True:
-            img_id, qw, qx, qy, qz, tx, ty, tz, cam_id, new_img_name \
+            img_id, qw, qx, qy, qz, tx, ty, tz, cam_id, img_name \
                 = extract_cam_pose_from_line(line, img_name)
             cam_pose_line = False
-            if new_img_name is None:
-                continue
-            else:
-                img_name = new_img_name
             # out_line = str(img_name * sampling_sec) + " " \
             #         + str(tx) + " " + str(ty) + " " + str(tz) + " " \
             #         + str(qx) + " " + str(qy) + " " + str(qz) + " " + str(qw) + "\n"
